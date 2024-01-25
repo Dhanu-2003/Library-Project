@@ -29,6 +29,8 @@ email = ''
 gen_otp = 0
 
 admin_user = ''
+Name=""
+regno=""
 
 
 
@@ -77,7 +79,7 @@ def availability():
 
     if(user=='' and credential_status):
         return index()
-    return render_template('student_Availability.html')
+    return render_template('student_Availability.html',name=Name)
 
 @app.route('/penalty')
 def penalty():
@@ -96,14 +98,14 @@ def penalty():
                 temp.append([i[0],i[2],i[3],'2',str(abs(total_)),str(abs(total_)*2)])
                 total+=(abs(total_)*2)
 
-    return render_template('student_penalty.html',data = temp,total = str(total))
+    return render_template('student_penalty.html',data = temp,total = str(total),name=Name)
 
 @app.route('/extension')
 def extension():
     global user
     if(user=='' and credential_status):
         return index()
-    return render_template('student_Extension.html',request_accepted=3)
+    return render_template('student_Extension.html',request_accepted=3,name=Name)
 
 @app.route('/extension_status')
 def extensionStatus():
@@ -114,7 +116,7 @@ def extensionStatus():
     temp_exe = []
     for i in cur:
         temp_exe.append([i[0],i[2],i[3],i[6]])
-    return render_template('student_ExeReq_status.html',data = temp_exe)
+    return render_template('student_ExeReq_status.html',data = temp_exe,name=Name)
 
 @app.route('/extensionRequest',methods = ['GET'])
 def extensionRequest():
@@ -146,10 +148,10 @@ def extensionRequest():
                 try:
                     cur.execute("insert into extension values('{}','{}','{}','{}','{}','{}','pending','{}')".format(i[0],i[1],i[2],i[3],x5,x6,days))
                     conn.commit()
-                    return render_template('student_Extension.html',request_accepted=1)
+                    return render_template('student_Extension.html',request_accepted=1,name=Name)
                 except:
                     conn.rollback()
-                    return render_template('student_Extension.html',request_accepted=0)
+                    return render_template('student_Extension.html',request_accepted=0,name=Name)
         return render_template('student_Extension.html',request_accepted = 0)
 
 
@@ -165,7 +167,7 @@ def availableStatus():
         elif (book or auth) and (book.lower() in i[0].lower() or book=='') and (auth.lower() in i[1].lower() or auth=='') and i[3]=='TRUE':
             fin_rel.append([i[0],i[1],i[2]])
     if fin_rel!=[]:
-        return render_template('student_availability_rel.html',data = fin_rel)
+        return render_template('student_availability_rel.html',data = fin_rel,name=Name)
     elif (book =='' and auth==''):
         return render_template('student_available_Invalid.html')
     else:
@@ -191,11 +193,11 @@ def holdings():
             data.append((end-datetime.now()).days)
             data_.append(data)
             print(data)
-    return render_template('student_MyHoldings.html',data = data_)
+    return render_template('student_MyHoldings.html',data = data_,name=Name)
 
 @app.route('/student', methods=['POST'])
 def process_form():
-    global user,credential_status
+    global user,credential_status,Name
     cur.execute('select * from Student')
     # Access form data using request.form
     name = request.form.get('ID')
@@ -206,6 +208,7 @@ def process_form():
         if i[0]==name and i[1] == password:
 
             credential_status = False
+            Name=name
             return holdings()
         
         
@@ -371,7 +374,7 @@ def request_admin():
     data = []
     for i in cur:
         data.append([i[0],i[1],i[2],i[3],i[4],i[7]])
-    return render_template('Admin_req.html',data = data)
+    return render_template('Admin_req.html',data = data,name=admin_user)
 
 @app.route('/admin_check',methods=['POST'])
 def admin_check():
@@ -384,6 +387,7 @@ def admin_check():
     for i in cur:
         if i[0]==name and i[1] == password:
             admin_user = name
+            
             return request_admin()
     return render_template("Admin_Login.html")
 
@@ -401,13 +405,13 @@ def penalty_admin():
         total_ = ((end-datetime.now()).days)
         if(total_<=0):
             data_to_html.append([i[0],i[1],i[2],i[3],str(abs(total_)),'2',str(abs(total_)*2)])
-    return render_template('Admin_penalty.html',data = data_to_html)
+    return render_template('Admin_penalty.html',data = data_to_html,name=admin_user)
 
 @app.route('/book_data_admin')
 def book_data_admin():
     if admin_user=='':
         return admin()
-    return render_template('Admin_Book_data.html')
+    return render_template('Admin_Book_data.html',name=admin_user)
 @app.route('/bood_data_show',methods = ['POST'])
 def book_data_show():
     if admin_user=='':
@@ -419,13 +423,13 @@ def book_data_show():
     for i in cur:
         if(book_name.lower() in i[2].lower()) and (author_name!=None and author_name.lower() in i[3].lower()):
             data_temp.append(i)
-    return render_template('Admin_Book_data_check_status.html',data= data_temp )
+    return render_template('Admin_Book_data_check_status.html',data= data_temp,name=admin_user )
 
 @app.route('/student_data_check_admin')
 def student_data_check_admin():
     if admin_user=='':
         return admin()
-    return render_template('Admin_Student_data.html')
+    return render_template('Admin_Student_data.html',name=admin_user)
 
 @app.route("/student_data_admin/show",methods=['POST'])
 def student_data_show():
@@ -439,7 +443,7 @@ def student_data_show():
         end = datetime(to_[-1],to_[-2],to_[-3])
         total_ = ((end-datetime.now()).days)
         data_temp.append([i[0],i[2],i[3],total_,str(abs(total_)*2) if total_<0 else 0])
-    return render_template('Admin_stu_data_check_status.html',data = data_temp)
+    return render_template('Admin_stu_data_check_status.html',data = data_temp,name=admin_user)
 
 @app.route('/req_acccept')
 def req_acccept():

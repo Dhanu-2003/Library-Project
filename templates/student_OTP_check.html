@@ -28,14 +28,14 @@
                     <p>ENTER OTP</p>
                 </div>
                 <div class="user-box">
-                    <input type="text" name = 'otp' placeholder="OTP">
+                    <input type="text" name = 'otp' placeholder="OTP"/required>
                 </div>
                 
                 
                 <div>
                     <a href="{{ url_for('resend') }}" class="forget-pass" >Resend it</a>
                 </div>
-                <button class="small-box1">
+                <button class="small-box" style="background-color:grey;filter:brightness(120%)"onmouseover="this.style.backgroundColor='white'" onmouseout="this.style.backgroundColor='grey'">
                    <p> CHECK IT </p>
                 </button>
             </form>

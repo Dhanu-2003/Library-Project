@@ -5,6 +5,7 @@
         
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <title> VIT CHENNAI </title>
         <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     </head>
@@ -38,7 +39,7 @@
                 <div>
                     <a href="{{ url_for('admin_forget_pass') }}" class="forget-pass" >Forgot Password?</a>
                 </div>
-                <button class="small-box">
+                <button class="small-box" style="background-color:grey;filter:brightness(120%)" onmouseover="this.style.backgroundColor='white'" onmouseout="this.style.backgroundColor='grey'">
                    <p> LOGIN</p>
                 </button>
             </form>
