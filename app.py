@@ -79,7 +79,7 @@ def availability():
 
     if(user=='' and credential_status):
         return index()
-    return render_template('student_Availability.html',name=Name)
+    return render_template('student_Availability.html',name=Name,reg=regno)
 
 @app.route('/penalty')
 def penalty():
