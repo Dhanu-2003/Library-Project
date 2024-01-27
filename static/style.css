@@ -12,6 +12,13 @@
     overflow: auto;
     background: white;
 }
+.error_message {
+    color: #ff0000;
+    font-size: 25px;
+    margin-left: 135px;
+
+    margin-top: 20px;
+}
 
 .left {
     
@@ -147,6 +154,7 @@
     width: 35%;
     height: 8%;
     margin: 0 auto;
+    
     padding: top 0;
     margin-left: 30%;
     background-color: white;

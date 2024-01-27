@@ -46,6 +46,12 @@
                 <div>
                     <a href="{{ url_for('index') }}" class="small" >STUDENT LOGIN</a>
                 </div>
+                {% if error_msg %}
+                    <div class="error_message">
+                       {{ error_msg }}
+                    </div>
+                    
+                    {% endif %}
             </div>
             
             

@@ -152,7 +152,7 @@ def extensionRequest():
                 except:
                     conn.rollback()
                     return render_template('student_Extension.html',request_accepted=0,name=Name)
-        return render_template('student_Extension.html',request_accepted = 0)
+        return render_template('student_Extension.html',request_accepted = 0,name=Name)
 
 
 @app.route('/availableStatus',methods=['POST'])
@@ -169,9 +169,9 @@ def availableStatus():
     if fin_rel!=[]:
         return render_template('student_availability_rel.html',data = fin_rel,name=Name)
     elif (book =='' and auth==''):
-        return render_template('student_available_Invalid.html')
+        return render_template('student_available_Invalid.html',name=Name)
     else:
-        return render_template('student_available_False.html')
+        return render_template('student_available_False.html',name=Name)
 
 
 @app.route('/holdings')
@@ -213,7 +213,8 @@ def process_form():
         
         
     user=''
-    return "wrong data found"
+    
+    return render_template('Student_Login.html',error_msg="Invalid Credentials")
 
         
 @app.route('/forget_password')
@@ -389,7 +390,7 @@ def admin_check():
             admin_user = name
             
             return request_admin()
-    return render_template("Admin_Login.html")
+    return render_template("Admin_Login.html",error_msg="Invalid Credentials")
 
 
 @app.route('/penalty_admin')
